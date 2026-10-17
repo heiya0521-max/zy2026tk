@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>App Download</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            position: relative; /* For top-right tip positioning */
+        }
+        /* Top-right browser tip - arrow above text, right aligned */
+        .browser-tip {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Overall right alignment */
+            gap: 4px;
+            font-size: 14px;
+            color: #ff6700;
+            font-weight: 500;
+            z-index: 999;
+            max-width: 220px; /* Prevent text overflow */
+        }
+        .arrow {
+            font-size: 18px;
+            animation: bounceUp 1.5s infinite;
+            /* Keep arrow aligned with text right edge */
+        }
+        /* Upward arrow bounce animation */
+        @keyframes bounceUp {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .container {
+            text-align: center;
+            max-width: 380px;
+            width: 100%;
+            background: white;
+            padding: 40px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #007aff;
+        }
+        h1 {
+            font-size: 22px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #007aff;
+            color: white;
+            text-decoration: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            margin: 0 8px;
+        }
+        .btn:hover {
+            background-color: #0066cc;
+        }
+        .btn-android {
+            background-color: #34a853;
+        }
+        .btn-android:hover {
+            background-color: #2d8e46;
+        }
+        .tip {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top-right browser tip: arrow above text -->
+    <div class="browser-tip">
+        <span class="arrow">⬆️</span>
+        If the page didn't redirect, tap here and choose "Open in browser"
+    </div>
+
+    <div class="container">
+        <div class="icon">📱</div>
+        <h1>Matching the best download channel for you</h1>
+        <p>The page will redirect automatically, if not, please click the download buttons below</p>
+        <a href="https://apps.apple.com/app/apple-store/id6755022123?pt=118423947&ct=YSZY2026TK&mt=8" class="btn btn-ios">Download on App Store</a>
+        <a href="https://play.google.com/store/apps/details?id=com.dai.wallpapers&referrer=utm_source%3DYSZY2026TK%26utm_medium%3Dpartner%26utm_campaign%3Dpromo2025" class="btn btn-android">Download on Google Play</a>
+        <p class="tip">Note: This page only supports automatic redirection on mobile devices</p>
+    </div>
+
+    <script>
+        // Device detection function
+        function judgeDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            // Check for Apple devices (iPhone, iPad, iPod)
+            const isAppleDevice = /iphone|ipad|ipod/.test(userAgent);
+            // Check for Android devices
+            const isAndroidDevice = /android/.test(userAgent);
+            
+            return {
+                isApple: isAppleDevice,
+                isAndroid: isAndroidDevice
+            };
+        }
+
+        // Auto redirect function (no delay)
+        function autoRedirect() {
+            const deviceInfo = judgeDevice();
+            const appleUrl = "https://apps.apple.com/app/apple-store/id6755022123?pt=118423947&ct=YSZY2026TK&mt=8";
+            const androidUrl = "https://play.google.com/store/apps/details?id=com.dai.wallpapers&referrer=utm_source%3DYSZY2026TK%26utm_medium%3Dpartner%26utm_campaign%3Dpromo2025";
+
+            // Redirect immediately based on device type
+            if (deviceInfo.isApple) {
+                console.log("Apple device detected, redirecting to App Store immediately");
+                window.location.href = appleUrl;
+            } else if (deviceInfo.isAndroid) {
+                console.log("Android device detected, redirecting to Google Play immediately");
+                window.location.href = androidUrl;
+            } else {
+                console.log("Mobile device not detected, showing manual download buttons");
+                document.querySelector("p").textContent = "Mobile device not detected, please select download channel manually";
+            }
+        }
+
+        // Execute redirect on page load
+        window.onload = function() {
+            autoRedirect();
+
+            // Add click events for manual download buttons (enhanced compatibility)
+            document.querySelector(".btn-ios").addEventListener("click", function(e) {
+                e.preventDefault();
+                window.location.href = this.href;
+            });
+
+            document.querySelector(".btn-android").addEventListener("click", function(e) {
+                e.preventDefault();
+                window.location.href = this.href;
+            });
+        };
+
+        // Extra safeguard: execute immediately after script loads
+        autoRedirect();
+    </script>
+</body>
+</html>
